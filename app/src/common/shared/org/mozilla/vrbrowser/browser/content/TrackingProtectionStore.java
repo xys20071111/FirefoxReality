@@ -102,10 +102,14 @@ public class TrackingProtectionStore implements DefaultLifecycleObserver,
 
                 // Restore the site list on the permissions storage notification
                 if (mIsFirstUpdate) {
-                    List<ContentBlockingException> exceptions = sitePermissions
+                    List<ContentBlockingController.ContentBlockingException> exceptions = new ArrayList<>();
+                    List<Object> rawExpections = sitePermissions
                             .stream()
                             .map(TrackingProtectionStore::toContentBlockingException)
                             .collect(Collectors.toList());
+                    for (int i = 0; i < rawExpections.size(); i++) {
+                        exceptions.add((ContentBlockingController.ContentBlockingException)rawExpections.get(i));
+                    }
                     mContentBlockingController.restoreExceptionList(exceptions);
                     mIsFirstUpdate = false;
                 }
@@ -164,7 +168,7 @@ public class TrackingProtectionStore implements DefaultLifecycleObserver,
     }
 
     public void remove(@NonNull SitePermission permission) {
-        ContentBlockingException exception = toContentBlockingException(permission);
+        ContentBlockingController.ContentBlockingException exception = (ContentBlockingController.ContentBlockingException) toContentBlockingException(permission);
         if (exception != null) {
             mContentBlockingController.removeException(exception);
         }
@@ -178,7 +182,7 @@ public class TrackingProtectionStore implements DefaultLifecycleObserver,
     public void removeAll() {
         // We can't use clearExceptionList as that clears also the private browsing exceptions
         mSitePermissions.forEach(permission -> {
-            ContentBlockingException exception = toContentBlockingException(permission);
+            ContentBlockingController.ContentBlockingException exception = (ContentBlockingController.ContentBlockingException) toContentBlockingException(permission);
             if (exception != null) {
                 mContentBlockingController.removeException(exception);
             }

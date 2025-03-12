@@ -5,8 +5,8 @@ buildscript {
     addRepos(repositories)
     dependencies {
 //        classpath "org.mozilla.components:tooling-glean-gradle:$versions.android_components"
-        classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath "$deps.kotlin.plugin"
+        classpath 'com.android.tools.build:gradle:8.8.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0"
         classpath 'com.huawei.agconnect:agcp:1.6.0.300'
         classpath 'org.ow2.asm:asm-util:+'
         classpath 'org.ow2.asm:asm-commons:+'

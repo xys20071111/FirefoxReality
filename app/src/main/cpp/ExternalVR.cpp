@@ -12,6 +12,7 @@
 #include "moz_external_vr.h"
 #include <pthread.h>
 #include <unistd.h>
+#include <assert.h>
 
 namespace {
 

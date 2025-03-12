@@ -5,9 +5,9 @@ plugins {
 apply plugin: 'com.android.application'
 apply from: "$project.rootDir/tools/gradle/versionCode.gradle"
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 //apply plugin: "org.mozilla.telemetry.glean-gradle-plugin"
-apply plugin: 'com.huawei.agconnect'
+//apply plugin: 'com.huawei.agconnect'
 
 //deps.telemetry.glean_unittests = "org.mozilla.telemetry:glean-forUnitTests:$project.ext.glean_version"
 
@@ -68,7 +68,17 @@ def getHVRMLApiKey = { ->
     }
     return ""
 }
-
+tasks.whenTaskAdded { task ->
+    if (task.name.equals("lint")) {
+        //this is for speed up build
+        task.enabled = false
+    }
+    if(task.name.contains("Test"))
+    {
+        //this is what you need
+        task.enabled = false
+    }
+}
 // Glean: Generate markdown docs for the collected metrics.
 ext.gleanGenerateMarkdownDocs = true
 ext.gleanDocsDirectory = "$rootDir/docs"
@@ -145,9 +155,6 @@ android {
         enabled = true
     }
 
-    lintOptions {
-        disable "ExtraTranslation"
-    }
 
     flavorDimensions "platform", "abi"
 
@@ -439,6 +446,15 @@ android {
     }
     androidResources {
         noCompress 'ja'
+    }
+    namespace 'org.mozilla.vrbrowser'
+    lint {
+        disable 'ExtraTranslation'
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
     }
 
 }

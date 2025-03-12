@@ -22,10 +22,10 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import mozilla.components.concept.fetch.Client;
-import mozilla.components.service.glean.Glean;
-import mozilla.components.service.glean.config.Configuration;
-import mozilla.components.service.glean.net.ConceptFetchHttpUploader;
-import mozilla.telemetry.glean.GleanTimerId;
+//import mozilla.components.service.glean.Glean;
+//import mozilla.components.service.glean.config.Configuration;
+//import mozilla.components.service.glean.net.ConceptFetchHttpUploader;
+//import mozilla.telemetry.glean.GleanTimerId;
 
 import static org.mozilla.vrbrowser.ui.widgets.Windows.MAX_WINDOWS;
 import static org.mozilla.vrbrowser.ui.widgets.Windows.WindowPlacement;
@@ -33,45 +33,45 @@ import static org.mozilla.vrbrowser.ui.widgets.Windows.WindowPlacement;
 
 public class GleanMetricsService {
 
-    private final static String APP_NAME = "FirefoxReality";
-    private final static String LOGTAG = SystemUtils.createLogtag(GleanMetricsService.class);
-    private static boolean initialized = false;
-    private static Context context = null;
-    private static HashSet<String> domainMap = new HashSet<String>();
-    private static Map<String, GleanTimerId> loadingTimerId = new Hashtable<>();
-    private static GleanTimerId immersiveTimerId;
-    private static Map<Integer, GleanTimerId> windowLifeTimerId = new Hashtable<>();
-    private static GleanTimerId activeWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
-    private static GleanTimerId openWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
-    private static GleanTimerId openPrivateWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
+//    private final static String APP_NAME = "FirefoxReality";
+//    private final static String LOGTAG = SystemUtils.createLogtag(GleanMetricsService.class);
+//    private static boolean initialized = false;
+//    private static Context context = null;
+//    private static HashSet<String> domainMap = new HashSet<String>();
+//    private static Map<String, GleanTimerId> loadingTimerId = new Hashtable<>();
+//    private static GleanTimerId immersiveTimerId;
+//    private static Map<Integer, GleanTimerId> windowLifeTimerId = new Hashtable<>();
+//    private static GleanTimerId activeWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
+//    private static GleanTimerId openWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
+//    private static GleanTimerId openPrivateWindowTimerId[] = new GleanTimerId[MAX_WINDOWS];
 
     // We should call this at the application initial stage.
     public static void init(@NonNull Context aContext, @NonNull Client client) {
-        if (initialized)
-            return;
-
-        context = aContext;
-        initialized = true;
-
-        final boolean telemetryEnabled = SettingsStore.getInstance(aContext).isTelemetryEnabled();
-        Configuration config = new Configuration(
-                ConceptFetchHttpUploader.fromClient(client),
-                Configuration.DEFAULT_TELEMETRY_ENDPOINT,
-                BuildConfig.BUILD_TYPE);
-
-        Glean.INSTANCE.initialize(aContext, telemetryEnabled, config);
+//        if (initialized)
+//            return;
+//
+//        context = aContext;
+//        initialized = true;
+//
+//        final boolean telemetryEnabled = SettingsStore.getInstance(aContext).isTelemetryEnabled();
+//        Configuration config = new Configuration(
+//                ConceptFetchHttpUploader.fromClient(client),
+//                Configuration.DEFAULT_TELEMETRY_ENDPOINT,
+//                BuildConfig.BUILD_TYPE);
+//
+//        Glean.INSTANCE.initialize(aContext, telemetryEnabled, config);
     }
 
     // It would be called when users turn on/off the setting of telemetry.
     // e.g., SettingsStore.getInstance(context).setTelemetryEnabled();
     public static void start() {
-        Glean.INSTANCE.setUploadEnabled(true);
+//        Glean.INSTANCE.setUploadEnabled(true);
     }
 
     // It would be called when users turn on/off the setting of telemetry.
     // e.g., SettingsStore.getInstance(context).setTelemetryEnabled();
     public static void stop() {
-        Glean.INSTANCE.setUploadEnabled(false);
+//        Glean.INSTANCE.setUploadEnabled(false);
     }
 
     public static void startPageLoadTime(String aUrl) {
@@ -103,12 +103,12 @@ public class GleanMetricsService {
     }
 
     public static void sessionStop() {
-        domainMap.clear();
-        loadingTimerId.clear();
-        windowLifeTimerId.clear();
-        activeWindowTimerId = new GleanTimerId[MAX_WINDOWS];
-        openWindowTimerId = new GleanTimerId[MAX_WINDOWS];
-        openPrivateWindowTimerId = new GleanTimerId[MAX_WINDOWS];
+//        domainMap.clear();
+//        loadingTimerId.clear();
+//        windowLifeTimerId.clear();
+//        activeWindowTimerId = new GleanTimerId[MAX_WINDOWS];
+//        openWindowTimerId = new GleanTimerId[MAX_WINDOWS];
+//        openPrivateWindowTimerId = new GleanTimerId[MAX_WINDOWS];
 
         /* intentionally left empty */
     }
@@ -140,7 +140,8 @@ public class GleanMetricsService {
     }
 
     private static String getDefaultSearchEngineIdentifierForTelemetry() {
-        return SearchEngineWrapper.get(context).getIdentifier();
+//        return SearchEngineWrapper.get(context).getIdentifier();
+        return "";
     }
 
     public static void newWindowOpenEvent() {

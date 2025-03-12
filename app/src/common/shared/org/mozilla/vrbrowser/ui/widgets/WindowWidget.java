@@ -1782,7 +1782,7 @@ public class WindowWidget extends UIWidget implements SessionChangeListener,
         mSession.captureBitmap();
     }
 
-    @Override
+//    @Override
     public void onLocationChange(@NonNull GeckoSession session, @Nullable String url) {
         if (mPromptDelegate != null &&
                 mViewModel.getUrl().getValue() != null &&

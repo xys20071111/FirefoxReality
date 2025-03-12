@@ -24,7 +24,7 @@ ext.deps = [:]
 def versions = [:]
 // GeckoView versions can be found here:
 // https://maven.mozilla.org/?prefix=maven2/org/mozilla/geckoview/
-versions.gecko_view_nightly = "95.0.20211006094130"
+versions.gecko_view_nightly = "128.0.20240609205151"
 versions.gecko_view_beta = "79.0.20200630191632"
 versions.gecko_view_release = "78.0.20200630195452"
 versions.android_components = "63.0.0"
@@ -190,8 +190,8 @@ ext.deps = deps
 def build_versions = [:]
 build_versions.min_sdk = 24
 build_versions.min_sdk_wave = 25
-build_versions.target_sdk = 30
-build_versions.target_sdk_wave = 30
+build_versions.target_sdk = 35
+build_versions.target_sdk_wave = 35
 build_versions.build_tools = "30.0.3"
 ext.build_versions = build_versions
 
@@ -199,7 +199,7 @@ ext.deps = deps
 
 def addRepos(RepositoryHandler handler) {
     handler.google()
-    handler.jcenter()
+    handler.mavenCentral()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     handler.maven { url 'https://maven.mozilla.org/maven2' }
     handler.maven { url 'https://download.servo.org/nightly/maven' }

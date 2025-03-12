@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.geckoview.ContentBlocking;
 import org.mozilla.geckoview.ContentBlockingController;
-import org.mozilla.geckoview.ContentBlockingController.ContentBlockingException;
 import org.mozilla.geckoview.GeckoRuntime;
 import org.mozilla.vrbrowser.R;
 import org.mozilla.vrbrowser.VRBrowserActivity;
@@ -206,34 +205,12 @@ public class TrackingProtectionStore implements DefaultLifecycleObserver,
     }
 
     @Nullable
-    private static SitePermission toSitePermission(@NonNull ContentBlockingException exception) {
-        try {
-            JSONObject json = exception.toJson();
-            return new SitePermission(
-                    json.getString("uri"),
-                    json.getString("principal"),
-                    SitePermission.SITE_PERMISSION_TRACKING);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+    private static SitePermission toSitePermission(@NonNull Object exception) {
         return null;
     }
 
     @Nullable
-    private static ContentBlockingException toContentBlockingException(@NonNull SitePermission permission) {
-        try {
-            JSONObject json = new JSONObject();
-            json.put("uri", permission.url);
-            json.put("principal", permission.principal);
-
-            return ContentBlockingException.fromJson(json);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+    private static Object toContentBlockingException(@NonNull Object permission) {
         return null;
     }
 

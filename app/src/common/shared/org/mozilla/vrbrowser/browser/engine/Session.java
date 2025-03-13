@@ -5,6 +5,7 @@
 
 package org.mozilla.vrbrowser.browser.engine;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -40,6 +41,7 @@ import org.mozilla.vrbrowser.browser.UserAgentOverride;
 import org.mozilla.vrbrowser.browser.VideoAvailabilityListener;
 import org.mozilla.vrbrowser.browser.content.TrackingProtectionPolicy;
 import org.mozilla.vrbrowser.browser.content.TrackingProtectionStore;
+import org.mozilla.vrbrowser.geckoAdapters.NavigationDelegateAdapter;
 import org.mozilla.vrbrowser.geolocation.GeolocationData;
 import org.mozilla.vrbrowser.telemetry.GleanMetricsService;
 import org.mozilla.vrbrowser.utils.BitmapCache;
@@ -61,7 +63,7 @@ import static org.mozilla.vrbrowser.utils.ServoUtils.createServoSession;
 import static org.mozilla.vrbrowser.utils.ServoUtils.isInstanceOfServoSession;
 import static org.mozilla.vrbrowser.utils.ServoUtils.isServoAvailable;
 
-public class Session implements ContentBlocking.Delegate, GeckoSession.NavigationDelegate,
+public class Session implements ContentBlocking.Delegate, NavigationDelegateAdapter,
         GeckoSession.ProgressDelegate, GeckoSession.ContentDelegate, GeckoSession.TextInputDelegate,
         GeckoSession.PromptDelegate, GeckoSession.HistoryDelegate, GeckoSession.PermissionDelegate,
         GeckoSession.SelectionActionDelegate, SharedPreferences.OnSharedPreferenceChangeListener, SessionChangeListener {
@@ -70,7 +72,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
     private static UserAgentOverride sUserAgentOverride;
     private static final long KEEP_ALIVE_DURATION_MS = 1000; // 1 second.
 
-    private transient CopyOnWriteArrayList<GeckoSession.NavigationDelegate> mNavigationListeners;
+    private transient CopyOnWriteArrayList<NavigationDelegateAdapter> mNavigationListeners;
     private transient CopyOnWriteArrayList<GeckoSession.ProgressDelegate> mProgressListeners;
     private transient CopyOnWriteArrayList<GeckoSession.ContentDelegate> mContentListeners;
     private transient CopyOnWriteArrayList<SessionChangeListener> mSessionChangeListeners;
@@ -233,7 +235,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
     }
 
     private void dumpAllState() {
-        for (GeckoSession.NavigationDelegate listener: mNavigationListeners) {
+        for (NavigationDelegateAdapter listener: mNavigationListeners) {
             dumpState(listener);
         }
         for (GeckoSession.ProgressDelegate listener: mProgressListeners) {
@@ -260,7 +262,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
         }
     }
 
-    private void dumpState(GeckoSession.NavigationDelegate aListener) {
+    private void dumpState(NavigationDelegateAdapter aListener) {
         if (mState.mSession != null) {
             aListener.onCanGoBack(mState.mSession, canGoBack());
             aListener.onCanGoForward(mState.mSession, mState.mCanGoForward);
@@ -329,7 +331,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
         mMedia.setAvailabilityDelegate(aDelegate);
     }
 
-    public void addNavigationListener(GeckoSession.NavigationDelegate aListener) {
+    public void addNavigationListener(NavigationDelegateAdapter aListener) {
         mNavigationListeners.addIfAbsent(aListener);
         dumpState(aListener);
     }
@@ -555,7 +557,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
     }
 
     private GeckoSession createGeckoSession(@NonNull SessionSettings aSettings) {
-        GeckoSessionSettings geckoSettings = new GeckoSessionSettings.Builder()
+        @SuppressLint("WrongConstant") GeckoSessionSettings geckoSettings = new GeckoSessionSettings.Builder()
                 .usePrivateMode(aSettings.isPrivateBrowsingEnabled())
                 .useTrackingProtection(aSettings.isTrackingProtectionEnabled())
                 .userAgentMode(aSettings.getUserAgentMode())
@@ -671,7 +673,9 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
 
         CompletableFuture<Void> result = new CompletableFuture<>();
         GeckoDisplay display = mState.mSession.acquireDisplay();
-        display.surfaceChanged(captureSurface, displayWidth, displayHeight);
+        GeckoDisplay.SurfaceInfo.Builder surfaceInfo = new GeckoDisplay.SurfaceInfo.Builder(captureSurface);
+        surfaceInfo.size(displayWidth, displayHeight);
+        display.surfaceChanged(surfaceInfo.build());
 
         Runnable cleanResources = () -> {
             display.surfaceDestroyed();
@@ -1042,6 +1046,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
         return result;
     }
 
+    @SuppressLint("WrongConstant")
     public void setUaMode(int mode) {
         if (mState.mSession == null || mState.mSettings.getUserAgentMode() == mode) {
             return;
@@ -1083,6 +1088,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
 
     // NavigationDelegate
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onLocationChange(@NonNull GeckoSession aSession, String aUri) {
         if (mState.mSession != aSession) {
@@ -1104,7 +1110,7 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
             mState.mSession.getSettings().setViewportMode(mState.mSettings.getViewportMode());
         }
 
-        for (GeckoSession.NavigationDelegate listener : mNavigationListeners) {
+        for (NavigationDelegateAdapter listener : mNavigationListeners) {
             listener.onLocationChange(aSession, aUri);
         }
 
@@ -1814,7 +1820,10 @@ public class Session implements ContentBlocking.Delegate, GeckoSession.Navigatio
         if (mState.mDisplay == null) {
             mState.mDisplay = mState.mSession.acquireDisplay();
         }
-        mState.mDisplay.surfaceChanged(surface, left, top, width, height);
+        GeckoDisplay.SurfaceInfo.Builder surfaceInfo = new GeckoDisplay.SurfaceInfo.Builder(surface);
+        surfaceInfo.size(width, height);
+        surfaceInfo.offset(left, top);
+        mState.mDisplay.surfaceChanged(surfaceInfo.build());
     }
 
     public void logState() {

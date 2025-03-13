@@ -6,7 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import org.mozilla.gecko.CrashHandler;
+import org.mozilla.geckoview.CrashHandler;
 import org.mozilla.vrbrowser.utils.SystemUtils;
 
 public class GlobalExceptionHandler {
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
             mInstance = new GlobalExceptionHandler();
             mInstance.mCrashHandler = new CrashHandler(aContext, CrashReporterService.class) {
                 @Override
-                protected Bundle getCrashExtras(final Thread thread, final Throwable exc) {
+                public Bundle getCrashExtras(final Thread thread, final Throwable exc) {
                     final Bundle extras = super.getCrashExtras(thread, exc);
                     if (extras == null) {
                         return null;

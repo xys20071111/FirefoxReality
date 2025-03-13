@@ -682,7 +682,7 @@ public class VRBrowserActivity extends PlatformActivity implements WidgetManager
         final String extraFile = intent.getStringExtra(GeckoRuntime.EXTRA_EXTRAS_PATH);
         Log.d(LOGTAG, "Dump File: " + dumpFile);
         Log.d(LOGTAG, "Extras File: " + extraFile);
-        Log.d(LOGTAG, "Fatal: " + intent.getBooleanExtra(GeckoRuntime.EXTRA_CRASH_FATAL, false));
+        Log.d(LOGTAG, "Fatal: " + intent.getBooleanExtra(GeckoRuntime.EXTRA_CRASH_PROCESS_TYPE, false));
 
         boolean isCrashReportingEnabled = SettingsStore.getInstance(this).isCrashReportingEnabled();
         if (isCrashReportingEnabled) {

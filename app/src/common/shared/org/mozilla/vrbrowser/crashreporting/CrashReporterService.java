@@ -63,7 +63,7 @@ public class CrashReporterService extends JobIntentService {
         String action = intent.getAction();
         if (GeckoRuntime.ACTION_CRASHED.equals(action)) {
             final int activityPid = SettingsStore.getInstance(getBaseContext()).getPid();
-            boolean fatal = intent.getBooleanExtra(GeckoRuntime.EXTRA_CRASH_FATAL, false);
+            boolean fatal = intent.getBooleanExtra(GeckoRuntime.EXTRA_CRASH_PROCESS_TYPE, false);
             long count = SettingsStore.getInstance(getBaseContext()).getCrashRestartCount();
             boolean cancelRestart = count > MAX_RESTART_COUNT;
             if (cancelRestart || BuildConfig.DISABLE_CRASH_RESTART) {

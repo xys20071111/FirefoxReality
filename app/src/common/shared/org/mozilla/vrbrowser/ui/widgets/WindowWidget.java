@@ -57,6 +57,7 @@ import org.mozilla.vrbrowser.browser.engine.SessionState;
 import org.mozilla.vrbrowser.browser.engine.SessionStore;
 import org.mozilla.vrbrowser.downloads.DownloadJob;
 import org.mozilla.vrbrowser.downloads.DownloadsManager;
+import org.mozilla.vrbrowser.geckoAdapters.NavigationDelegateAdapter;
 import org.mozilla.vrbrowser.telemetry.GleanMetricsService;
 import org.mozilla.vrbrowser.ui.viewmodel.WindowViewModel;
 import org.mozilla.vrbrowser.ui.views.library.LibraryPanel;
@@ -85,7 +86,7 @@ import mozilla.components.concept.storage.VisitType;
 import static org.mozilla.vrbrowser.utils.ServoUtils.isInstanceOfServoSession;
 
 public class WindowWidget extends UIWidget implements SessionChangeListener,
-        GeckoSession.ContentDelegate, GeckoSession.NavigationDelegate, VideoAvailabilityListener,
+        GeckoSession.ContentDelegate, NavigationDelegateAdapter, VideoAvailabilityListener,
         GeckoSession.HistoryDelegate, GeckoSession.ProgressDelegate, GeckoSession.SelectionActionDelegate,
         Session.WebXRStateChangedListener, Session.PopUpStateChangedListener,
         Session.DrmStateChangedListener, Session.ExternalRequestDelegate, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -2016,15 +2017,15 @@ public class WindowWidget extends UIWidget implements SessionChangeListener,
         mSelectionMenu.setActions(aSelection.availableActions);
         Matrix matrix = new Matrix();
         aSession.getClientToSurfaceMatrix(matrix);
-        matrix.mapRect(aSelection.clientRect);
+        matrix.mapRect(aSelection.screenRect);
         RectF selectionRect = null;
-        if (aSelection.clientRect != null) {
+        if (aSelection.screenRect != null) {
             float ratio = WidgetPlacement.worldToWindowRatio(getContext());
             selectionRect = new RectF(
-                    aSelection.clientRect.left * ratio,
-                    aSelection.clientRect.top* ratio,
-                    aSelection.clientRect.right * ratio,
-                    aSelection.clientRect.bottom * ratio
+                    aSelection.screenRect.left * ratio,
+                    aSelection.screenRect.top* ratio,
+                    aSelection.screenRect.right * ratio,
+                    aSelection.screenRect.bottom * ratio
             );
         }
         mSelectionMenu.setSelectionRect(selectionRect);

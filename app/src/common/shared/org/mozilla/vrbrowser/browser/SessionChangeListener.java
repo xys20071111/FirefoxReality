@@ -1,5 +1,7 @@
 package org.mozilla.vrbrowser.browser;
 
+import androidx.annotation.NonNull;
+
 import org.mozilla.geckoview.GeckoSession;
 import org.mozilla.vrbrowser.browser.engine.Session;
 

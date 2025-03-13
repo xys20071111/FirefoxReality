@@ -1,3 +1,6 @@
+# Notice
+Update geckoview to 128.0.20240609205151 (according to wolvic, original version of geckoview doesn't support webxr), tested on noapiX86_64Debug.  
+I am going to test it on my Pico Neo 2.  
 # Firefox Reality
 
 The goal of the Firefox Reality project is to create a full-featured browser exclusively for *standalone* AR and VR headsets.

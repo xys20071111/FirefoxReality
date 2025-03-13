@@ -41,6 +41,7 @@ import org.mozilla.vrbrowser.browser.engine.Session;
 import org.mozilla.vrbrowser.browser.engine.SessionStore;
 import org.mozilla.vrbrowser.databinding.NavigationBarBinding;
 import org.mozilla.vrbrowser.db.SitePermission;
+import org.mozilla.vrbrowser.geckoAdapters.NavigationDelegateAdapter;
 import org.mozilla.vrbrowser.search.suggestions.SuggestionsProvider;
 import org.mozilla.vrbrowser.telemetry.GleanMetricsService;
 import org.mozilla.vrbrowser.ui.viewmodel.SettingsViewModel;
@@ -71,7 +72,7 @@ import static org.mozilla.vrbrowser.db.SitePermission.SITE_PERMISSION_POPUP;
 import static org.mozilla.vrbrowser.db.SitePermission.SITE_PERMISSION_TRACKING;
 import static org.mozilla.vrbrowser.ui.widgets.menus.VideoProjectionMenuWidget.VIDEO_PROJECTION_NONE;
 
-public class NavigationBarWidget extends UIWidget implements GeckoSession.NavigationDelegate,
+public class NavigationBarWidget extends UIWidget implements NavigationDelegateAdapter,
         GeckoSession.ContentDelegate, WidgetManagerDelegate.WorldClickListener,
         WidgetManagerDelegate.UpdateListener, SessionChangeListener,
         NavigationURLBar.NavigationURLBarDelegate, VoiceSearchWidget.VoiceSearchDelegate,

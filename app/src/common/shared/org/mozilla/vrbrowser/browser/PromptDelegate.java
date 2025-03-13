@@ -19,6 +19,7 @@ import org.mozilla.vrbrowser.browser.engine.Session;
 import org.mozilla.vrbrowser.browser.engine.SessionState;
 import org.mozilla.vrbrowser.browser.engine.SessionStore;
 import org.mozilla.vrbrowser.db.SitePermission;
+import org.mozilla.vrbrowser.geckoAdapters.NavigationDelegateAdapter;
 import org.mozilla.vrbrowser.ui.viewmodel.SitePermissionViewModel;
 import org.mozilla.vrbrowser.ui.widgets.UIWidget;
 import org.mozilla.vrbrowser.ui.widgets.WidgetManagerDelegate;
@@ -46,7 +47,7 @@ import mozilla.components.concept.storage.Login;
 public class PromptDelegate implements
         GeckoSession.PromptDelegate,
         WindowWidget.WindowListener,
-        GeckoSession.NavigationDelegate,
+        NavigationDelegateAdapter,
         GeckoSession.ContentDelegate {
 
     private PromptWidget mPrompt;

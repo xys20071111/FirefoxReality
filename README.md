@@ -1,5 +1,5 @@
 # Notice
-Update geckoview to 128.0.20240609205151 (can't use webxr, I don't know why), tested on noapiX86_64Debug.  
+Update geckoview to 128.0.20240609205151 (can't use webxr, I don't know how to fix it), tested on noapiX86_64Debug.  
 Works on Pico Neo 2. Please build debug version because release version will crash on start for some reason.    
 # Firefox Reality
 
